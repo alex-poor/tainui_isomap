@@ -81,6 +81,11 @@ export function RegionAccessPanel({
       <div className="space-y-1.5">
         {SERVICES.map((s) => {
           const m = access?.services[s.id]
+          const count = inZoneCounts[s.id] ?? 0
+          // Good/Poor follows the access zone the user controls: a service is
+          // reachable (Good) only if at least one of its facilities falls inside
+          // the zone. Equivalent to "nearest ≤ zone radius".
+          const bin: 'good' | 'poor' = count > 0 ? 'good' : 'poor'
           return (
             <div
               key={s.id}
@@ -96,17 +101,18 @@ export function RegionAccessPanel({
                 {formatDistance(m?.dist_km ?? null)}
               </span>
               <span className="w-10 text-right text-xs font-medium text-ti-onyx">
-                {inZoneCounts[s.id] ?? 0} in
+                {count} in
               </span>
-              <BinChip bin={m?.bin ?? null} />
+              <BinChip bin={bin} />
             </div>
           )
         })}
       </div>
 
       <p className="mt-2 text-[10px] leading-snug text-ti-onyx/45">
-        Distance is straight-line from the region centroid to the nearest
-        service. Drive-time routing can replace this later.
+        <strong>Good</strong> = at least one of these services lies within the{' '}
+        {zoneKm} km access zone; the distance shown is straight-line to the
+        nearest one. Drive-time routing can replace this later.
       </p>
     </div>
   )
