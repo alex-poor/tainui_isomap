@@ -85,18 +85,17 @@ export default function App() {
 
   const handleMapClick = useCallback(
     (e: MapLayerMouseEvent) => {
-      const feature = e.features?.[0]
-      if (!feature) {
+      // Select the SA3 under the cursor — even when a service point sits on top
+      // of it. Clicking empty space (no region) clears the selection.
+      const region = e.features?.find((f) => f.layer?.id === 'regions-fill')
+      if (!region) {
         setSelected(null)
         return
       }
-      if (feature.layer?.id === 'regions-fill') {
-        const props = feature.properties as unknown as RegionProperties
-        setSelected(props)
-        const c = access.data?.[props.sa3_code]?.centroid
-        if (c) mapRef.current?.flyTo(c, zoneKm * 1.4)
-      }
-      // Clicks on facility points keep the current region selection.
+      const props = region.properties as unknown as RegionProperties
+      setSelected(props)
+      const c = access.data?.[props.sa3_code]?.centroid
+      if (c) mapRef.current?.flyTo(c, zoneKm * 1.4)
     },
     [access.data, zoneKm],
   )

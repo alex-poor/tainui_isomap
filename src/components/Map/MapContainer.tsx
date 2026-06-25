@@ -88,7 +88,16 @@ export const MapContainer = forwardRef<MapContainerHandle, MapContainerProps>(
     const handleMouseMove = useCallback((e: MapLayerMouseEvent) => {
       const map = mapRef.current?.getMap()
       if (!map) return
-      const feature = e.features?.[0]
+      const features = e.features ?? []
+      // A point always wins over the region beneath it, regardless of the order
+      // MapLibre returns them in.
+      const facility = features.find(
+        (f) =>
+          f.layer?.id === 'facility-points' ||
+          f.layer?.id === 'facility-inzone-points',
+      )
+      const region = features.find((f) => f.layer?.id === 'regions-fill')
+      const feature = facility ?? region
       if (!feature) {
         map.getCanvas().style.cursor = ''
         setHover(null)
@@ -136,7 +145,11 @@ export const MapContainer = forwardRef<MapContainerHandle, MapContainerProps>(
         minZoom={MAP_DEFAULTS.minZoom}
         maxZoom={MAP_DEFAULTS.maxZoom}
         mapStyle={initialStyle}
-        interactiveLayerIds={['regions-fill', 'facility-points']}
+        interactiveLayerIds={[
+          'regions-fill',
+          'facility-points',
+          'facility-inzone-points',
+        ]}
         onLoad={handleLoad}
         onClick={(e) => onClickLayer?.(e)}
         onMouseMove={handleMouseMove}
