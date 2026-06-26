@@ -14,6 +14,9 @@ dist-ssr
 # Raw source data (large; pulled from sibling projects by the data pipeline)
 data-src/
 
+# LibreOffice / Office lock files
+.~lock.*#
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
