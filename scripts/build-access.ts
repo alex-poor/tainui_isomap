@@ -54,13 +54,10 @@ const facilities = JSON.parse(
   readFileSync(resolve(PUBLIC_DATA, 'facilities.geojson'), 'utf8'),
 ) as FeatureCollection<Point, FacilityProps>
 
-// Bucket facilities by category once.
-const byCategory: Record<ServiceId, Feature<Point, FacilityProps>[]> = {
-  hospital: [],
-  gp: [],
-  mental_health: [],
-  marae: [],
-}
+// Bucket facilities by category once (keys derived from SERVICES).
+const byCategory = Object.fromEntries(
+  SERVICES.map((s) => [s.id, [] as Feature<Point, FacilityProps>[]]),
+) as Record<ServiceId, Feature<Point, FacilityProps>[]>
 for (const f of facilities.features) byCategory[f.properties.category]?.push(f)
 
 const out: Record<string, RegionAccess> = {}

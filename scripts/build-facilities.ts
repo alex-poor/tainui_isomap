@@ -11,7 +11,7 @@
 import { readFileSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import type { Feature, FeatureCollection, Point } from 'geojson'
-import { DATA_SRC, PUBLIC_DATA } from './paths.ts'
+import { DATA_SRC, PUBLIC_DATA, ROOT } from './paths.ts'
 import {
   FACILITY_TYPE_TO_SERVICE,
   type ServiceId,
@@ -89,6 +89,35 @@ for (const f of marae.features) {
     },
   })
   tally('marae')
+}
+
+// --- Pikonga (Tainui's own iwi health providers; geocoded from their list) ---
+interface PikongaRecord {
+  name: string
+  address: string
+  town: string
+  notes: string
+  lon: number | null
+  lat: number | null
+}
+const pikonga = JSON.parse(
+  readFileSync(resolve(ROOT, 'scripts', 'pikonga.json'), 'utf8'),
+) as PikongaRecord[]
+for (const p of pikonga) {
+  if (p.lon == null || p.lat == null || !inNZ(p.lon, p.lat)) continue
+  const detail = [`${p.address}, ${p.town}`, p.notes].filter(Boolean).join(' — ')
+  features.push({
+    type: 'Feature',
+    geometry: { type: 'Point', coordinates: [p.lon, p.lat] },
+    properties: {
+      name: p.name,
+      category: 'pikonga',
+      type: 'Pikonga — Tainui iwi health provider',
+      detail,
+      region: 'Waikato-Tainui',
+    },
+  })
+  tally('pikonga')
 }
 
 const collection: FeatureCollection<Point, FacilityProps> = {

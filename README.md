@@ -23,7 +23,7 @@ Everything is baked into `public/data/` and served statically.
 | Layer | File | Source |
 |---|---|---|
 | SA3 regions (choropleth) | `public/data/regions.geojson` | Stats NZ SA3 + census (via phomap) |
-| Service points | `public/data/facilities.geojson` | NZ HPI facilities register + mārae (karo-pg) |
+| Service points | `public/data/facilities.geojson` | NZ HPI facilities register + mārae (karo-pg) + Pikonga (`scripts/pikonga.json`) |
 | Iwi rohe boundaries | `public/data/iwi_rohe.geojson` | Te Puni Kōkiri rohe (iwimap): all 109 iwi |
 | Precomputed access | `public/data/sa3_access.json` | derived (nearest service per SA3) |
 
@@ -44,6 +44,9 @@ data pipeline and the app):
   Counselling, Community Psychology, Psychiatry, Alcohol &amp; Drug, DHB Mental
   Health Unit
 - **Marae** — mārae locations
+- **Pikonga (Tainui health)** — Waikato-Tainui's own iwi health providers, which
+  are *not* in the official HPI register. Curated from their own list and
+  geocoded from street addresses (see `scripts/pikonga.json`).
 
 Add a category, or change which HPI facility types roll into one, by editing that
 single file and re-running the pipeline.

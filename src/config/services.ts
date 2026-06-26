@@ -6,15 +6,15 @@
  * facilities register that roll up into each category. Mārae come from a
  * separate dataset, so that category has no facilityTypes (matched by `source`).
  */
-export type ServiceId = 'hospital' | 'gp' | 'mental_health' | 'marae'
+export type ServiceId = 'hospital' | 'gp' | 'mental_health' | 'marae' | 'pikonga'
 
 export interface ServiceDef {
   id: ServiceId
   label: string
   /** Short label for compact UI (legend, chips). */
   short: string
-  /** Source dataset: HPI facilities register, or the mārae dataset. */
-  source: 'hpi' | 'marae'
+  /** Source dataset: HPI register, mārae dataset, or curated Pikonga list. */
+  source: 'hpi' | 'marae' | 'pikonga'
   /** Exact `Facility Type Name` values that map into this category (hpi only). */
   facilityTypes: string[]
   /** Marker colour on the map / legend. */
@@ -70,6 +70,15 @@ export const SERVICES: ServiceDef[] = [
     facilityTypes: [],
     color: '#1a7f37',
     goodKm: 10,
+  },
+  {
+    id: 'pikonga',
+    label: 'Pikonga (Tainui health)',
+    short: 'Pikonga',
+    source: 'pikonga',
+    facilityTypes: [],
+    color: '#ea580c',
+    goodKm: 15,
   },
 ]
 

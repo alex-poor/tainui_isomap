@@ -1,0 +1,16 @@
+[
+  { "name": "Waahi Whaanui Trust", "address": "77 Rotowaro Road", "town": "Huntly", "notes": "", "lon": 175.1475681, "lat": -37.5703039, "precision": "address" },
+  { "name": "Waahi Paa", "address": "177 Harris Street", "town": "Huntly", "notes": "", "lon": 175.153881, "lat": -37.5495228, "precision": "address" },
+  { "name": "Matawhaanui", "address": "159 Harris Street", "town": "Huntly", "notes": "", "lon": 175.1527131, "lat": -37.5523834, "precision": "address" },
+  { "name": "Raukura Hauora o Tainui", "address": "23 Parry Street", "town": "Huntly", "notes": "Clinic/HQ (provider has four sites)", "lon": 175.1536022, "lat": -37.5584792, "precision": "address" },
+  { "name": "Ngaa Miro Health Trust", "address": "29 River Road", "town": "Ngaruawahia", "notes": "", "lon": 175.1542427, "lat": -37.662825, "precision": "address" },
+  { "name": "Ngaa Uri o Maahanga", "address": "145 Maori Point Road", "town": "Whatawhata", "notes": "", "lon": 175.1467711, "lat": -37.7885407, "precision": "address" },
+  { "name": "Ngaati Korokii-Kahukura Hauora", "address": "271 Hicks Road", "town": "Maungatautari", "notes": "", "lon": 175.5759465, "lat": -37.9904068, "precision": "address" },
+  { "name": "Ngaati Korokii-Kahukura Hauora (Pukeatua)", "address": "1036 Oreipunga Road", "town": "Pukeatua", "notes": "Second site; town-level location", "lon": 175.5581711, "lat": -38.0642392, "precision": "town" },
+  { "name": "Te Toi Ora ki Whaingaroa", "address": "12 Wallis Street", "town": "Raglan", "notes": "", "lon": 174.8685486, "lat": -37.7989724, "precision": "address" },
+  { "name": "Te Toi Ora ki Kawhia", "address": "201 Ahurei Street", "town": "Kāwhia", "notes": "Kāwhia Hauora Hub", "lon": 174.8156055, "lat": -38.0662063, "precision": "address" },
+  { "name": "Mangatoatoa Marae", "address": "66 Te Mawhai Road", "town": "Tokanui", "notes": "", "lon": 175.3338889, "lat": -38.06021, "precision": "address" },
+  { "name": "Te Hauora o Ngaati Hauaa", "address": "2 Cadman Street", "town": "Waharoa", "notes": "", "lon": 175.7548529, "lat": -37.7649136, "precision": "address" },
+  { "name": "Ngaati Wairere", "address": "825 Gordonton Road", "town": "Gordonton", "notes": "", "lon": 175.3160532, "lat": -37.6856968, "precision": "address" },
+  { "name": "Ngaati Tamaoho", "address": "128 Hingaia Road", "town": "Karaka", "notes": "", "lon": 174.9202729, "lat": -37.076692, "precision": "address" }
+]
