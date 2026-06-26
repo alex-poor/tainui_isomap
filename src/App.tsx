@@ -14,6 +14,7 @@ import { Sidebar } from './components/panels/Sidebar.tsx'
 import { RegionAccessPanel } from './components/panels/RegionAccessPanel.tsx'
 import { MetricSelector } from './components/controls/MetricSelector.tsx'
 import { LayerToggle } from './components/controls/LayerToggle.tsx'
+import { IwiSelector, type IwiItem } from './components/controls/IwiSelector.tsx'
 import { Legend } from './components/controls/Legend.tsx'
 import { BasemapSwitcher } from './components/controls/BasemapSwitcher.tsx'
 
@@ -21,6 +22,7 @@ import { useDataLoader } from './hooks/useDataLoader.ts'
 import { haversineKm } from './lib/geo.ts'
 import { METRIC_BY_ID, DEFAULT_METRIC, type MetricId } from './lib/metrics.ts'
 import { SERVICES, SERVICE_IDS, type ServiceId } from './config/services.ts'
+import { DEFAULT_ROHE_CODES } from './config/rohe.ts'
 import { DEFAULT_BASEMAP, type BasemapId, TAINUI_BOUNDS } from './config/map.ts'
 import type {
   RegionsData,
@@ -46,14 +48,23 @@ export default function App() {
   const [basemap, setBasemap] = useState<BasemapId>(DEFAULT_BASEMAP)
   const [metric, setMetric] = useState<MetricId>(DEFAULT_METRIC)
   const [serviceVisibility, setServiceVisibility] = useState(allVisible)
-  const [roheVisible, setRoheVisible] = useState(true)
+  const [selectedRohe, setSelectedRohe] = useState<string[]>(DEFAULT_ROHE_CODES)
   const [zoneKm, setZoneKm] = useState(20)
   const [selected, setSelected] = useState<RegionProperties | null>(null)
 
   const regions = useDataLoader<RegionsData>('/data/regions.geojson')
   const facilities = useDataLoader<FacilitiesData>('/data/facilities.geojson')
-  const rohe = useDataLoader<RoheData>('/data/tainui_rohe.geojson')
+  const rohe = useDataLoader<RoheData>('/data/iwi_rohe.geojson')
   const access = useDataLoader<AccessData>('/data/sa3_access.json')
+
+  // Full iwi list (sorted by name) for the picker, derived from the rohe data.
+  const iwiList = useMemo<IwiItem[]>(() => {
+    const feats = rohe.data?.features ?? []
+    return feats.map((f) => ({
+      tpk_code: f.properties.tpk_code,
+      name: f.properties.name,
+    }))
+  }, [rohe.data])
 
   const selectedAccess = selected ? access.data?.[selected.sa3_code] : undefined
   const zoneCenter = selectedAccess?.centroid ?? null
@@ -104,6 +115,12 @@ export default function App() {
     setServiceVisibility((prev) => ({ ...prev, [id]: !prev[id] }))
   }, [])
 
+  const toggleRohe = useCallback((code: string) => {
+    setSelectedRohe((prev) =>
+      prev.includes(code) ? prev.filter((c) => c !== code) : [...prev, code],
+    )
+  }, [])
+
   return (
     <div className="relative h-full w-full">
       <MapContainer ref={mapRef} basemap={basemap} onClickLayer={handleMapClick}>
@@ -114,7 +131,7 @@ export default function App() {
             selectedCode={selected?.sa3_code ?? null}
           />
         )}
-        {rohe.data && <RoheLayer data={rohe.data} visible={roheVisible} />}
+        {rohe.data && <RoheLayer data={rohe.data} selectedCodes={selectedRohe} />}
         <AccessZoneLayer center={zoneCenter} radiusKm={zoneKm} />
         {facilities.data && (
           <FacilitiesLayer
@@ -131,8 +148,13 @@ export default function App() {
         <LayerToggle
           serviceVisibility={serviceVisibility}
           onToggleService={toggleService}
-          roheVisible={roheVisible}
-          onToggleRohe={() => setRoheVisible((v) => !v)}
+        />
+        <IwiSelector
+          iwi={iwiList}
+          selected={selectedRohe}
+          onToggle={toggleRohe}
+          onSetDefault={() => setSelectedRohe(DEFAULT_ROHE_CODES)}
+          onClear={() => setSelectedRohe([])}
         />
 
         <div>

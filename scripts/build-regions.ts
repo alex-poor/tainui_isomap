@@ -20,7 +20,7 @@ import type {
   MultiPolygon,
   Polygon,
 } from 'geojson'
-import { DATA_SRC, PUBLIC_DATA } from './paths.ts'
+import { DATA_SRC, PUBLIC_DATA, ROHE_CODES } from './paths.ts'
 
 type Geom = Polygon | MultiPolygon
 
@@ -41,9 +41,18 @@ const src = JSON.parse(
   readFileSync(resolve(DATA_SRC, 'sa3_regions.geojson'), 'utf8'),
 ) as FeatureCollection<Geom>
 
-const rohe = JSON.parse(
-  readFileSync(resolve(PUBLIC_DATA, 'tainui_rohe.geojson'), 'utf8'),
+// `in_rohe` means "inside the Tainui-waka rohe" specifically (the app's focus),
+// not any of the 100+ iwi now available, so filter to the default codes.
+const tainuiCodes = new Set(ROHE_CODES.map(String))
+const allRohe = JSON.parse(
+  readFileSync(resolve(PUBLIC_DATA, 'iwi_rohe.geojson'), 'utf8'),
 ) as FeatureCollection<Geom>
+const rohe = {
+  ...allRohe,
+  features: allRohe.features.filter((f) =>
+    tainuiCodes.has(String(f.properties?.tpk_code)),
+  ),
+} as FeatureCollection<Geom>
 
 const clampDecile = (v: number) => Math.min(10, Math.max(1, Math.round(v)))
 

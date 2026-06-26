@@ -24,7 +24,7 @@ Everything is baked into `public/data/` and served statically.
 |---|---|---|
 | SA3 regions (choropleth) | `public/data/regions.geojson` | Stats NZ SA3 + census (via phomap) |
 | Service points | `public/data/facilities.geojson` | NZ HPI facilities register + mārae (karo-pg) |
-| Iwi rohe boundary | `public/data/tainui_rohe.geojson` | Te Puni Kōkiri rohe (iwimap): Waikato, Maniapoto, Raukawa |
+| Iwi rohe boundaries | `public/data/iwi_rohe.geojson` | Te Puni Kōkiri rohe (iwimap): all 109 iwi |
 | Precomputed access | `public/data/sa3_access.json` | derived (nearest service per SA3) |
 
 ### Region metrics
@@ -79,7 +79,7 @@ scripts in [`scripts/`](scripts) transform them into `public/data/`:
 
 | Script | Output |
 |---|---|
-| `build-rohe.ts` | merge + simplify TPK rohe → `tainui_rohe.geojson` |
+| `build-rohe.ts` | merge + simplify + round all TPK rohe → `iwi_rohe.geojson` |
 | `build-facilities.ts` | categorise HPI register + mārae → `facilities.geojson` |
 | `build-regions.ts` | SA3 + derived metrics + in-rohe flag → `regions.geojson` |
 | `build-access.ts` | nearest service per SA3 → `sa3_access.json` |
@@ -93,7 +93,7 @@ access). Config (rohe codes, source paths) is in
 - `phomap/public/data/sa3_regions.geojson` → `data-src/sa3_regions.geojson`
 - `phomap/public/data/Facilities20260116.csv` → `data-src/facilities.csv`
 - `karo-pg/karopg-setup/marae.geojson` → `data-src/marae.geojson`
-- `iwimap/public/geojson/{26,27,28}.geojson` → `data-src/rohe/`
+- `iwimap/public/geojson/*.geojson` (all 109 iwi) → `data-src/rohe/`
 
 ## Roadmap
 

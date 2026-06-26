@@ -8,8 +8,10 @@ export const DATA_SRC = resolve(ROOT, 'data-src')
 export const PUBLIC_DATA = resolve(ROOT, 'public', 'data')
 
 /**
- * Te Puni Kōkiri rohe codes that make up the Tainui waka focus area.
- * 26 = Waikato (Waikato-Tainui, primary), 27 = Maniapoto, 28 = Raukawa.
+ * Tainui-waka TPK rohe codes — the default selection and the set the region
+ * `in_rohe` flag is computed against. 26 = Waikato (Waikato-Tainui), 27 =
+ * Maniapoto, 28 = Raukawa. (build-rohe still bundles ALL iwi; these are just
+ * the focus set.)
  */
 export const ROHE_CODES = [26, 27, 28] as const
 
